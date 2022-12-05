@@ -1,0 +1,53 @@
+{% extends 'base.twig' %}
+
+
+{% block main %}
+
+
+
+
+	<h2>Modification d\'un contenu</h2>
+
+<div class="redaction">
+  {% for element in elements %}
+ 
+	<form method="post" action="controleur.php?page=elements&action=update">
+		<input type="hidden" name="id_article" value="{{element.element_id}}">
+		<input type="text" name="style" value="{{element.style}}" placeholder="style">
+		<select name="balise" id="balise">
+			<option value="p">paragraphe</option>
+			<option value="h1">h1</option>
+			<option value="h2">h2</option>
+			<option value="h3">h3</option>
+		</select>
+		<textarea name="contenu">{{element.contenu}}</textarea>
+		<input type="submit" value="Modifier">
+	</form>
+
+  <form method="post" action="controleur.php?page=elements&action=delete">
+    <input type="hidden" name="element_id" value="{{element.element_id}}">
+    <input type="submit" value="Supprimer">
+  </form>
+
+     {% endfor %}
+
+  	<form method="post" action="controleur.php?page=elements&action=create">
+		<input type="hidden" name="id_article" value="{{id}}">
+		<select name="balise" id="balise">
+			<option value="p">paragraphe</option>
+			<option value="h1">h1</option>
+			<option value="h2">h2</option>
+			<option value="h3">h3</option>
+		</select>
+		<textarea name="contenu" placeholder="contenu"></textarea>
+		<input type="submit" value="Créer">
+	</form>
+	<form action="controleur.php?page=elements&action=upload" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="id_article" value="{{id}}">
+		<input type="file" name="my_image">
+		<input type="submit" name="submit" value="Upload">
+
+	</form>
+  </div>
+ 
+{% endblock %}

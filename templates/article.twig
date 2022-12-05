@@ -1,0 +1,23 @@
+{% extends 'base.twig' %}
+
+{% block main %}
+
+<div class="supp"><a href="controleur.php?page=elements&action=edit&id={{article.id_article}}"><i class="bi bi-pen"></i></a></div>
+<div class="supp"><a href="controleur.php?page=article&action=delete&id={{article.id_article}}"><i class="bi bi-trash3-fill"></i></i></a></div>
+
+
+<h1>{{article.titre}}</h1>
+
+<p class='chapo'>{{article.chapo}}</p>
+
+<div class="texte">
+
+{% for  element in element %}
+
+	<{{element.balise}} src="{{ element.src }}" class="{{ element.style }}">{{ element.contenu }}</{{element.balise}}>
+
+{% endfor %}
+</div>
+<p class='auteur'>{{article.auteur}}</p>
+
+{% endblock %}

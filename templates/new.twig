@@ -1,0 +1,16 @@
+{% extends 'base.twig' %}
+
+
+{% block main %}
+
+	<h1>Création d'une nouvelle page</h1>
+<div class="redaction">
+	<form method="post" action="controleur.php?page=article&action=create">
+		<input type="text" name="titre" placeholder="Titre de la page">
+		<input type="text" name="chapo" placeholder="Chapo">
+		<input type="text" name="auteur" placeholder="Auteur">
+		<input type="submit" value="Créer">
+    </form>
+</div>
+
+	{% endblock %}

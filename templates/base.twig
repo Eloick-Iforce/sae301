@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>CMS</title>
+		<link rel="stylesheet" href="css/style.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+	</head>
+
+	<nav>
+		<ul>
+			<li><p><a href="controleur.php">Crimson Management System</a></p></li>
+			<li><p><a href="controleur.php">Accueil</a></p></li>
+			<li><p><a href="controleur.php?page=article&action=new">Nouvelle page</a></p></li>
+		</ul>
+	</nav>
+
+
+	<body>
+		{% block main %}
+
+		<h1>Les derniers Articles</h1>
+<div class="wrap">
+		{% for article in article %}
+
+			<div class="article">
+			<a href="controleur.php?page=article&action=read&id={{article.id_article}}">
+				<h2>{{ article.titre }}</h2>
+				<p class="chapo">{{ article.chapo }}</p>
+				<p class="auteur">{{ article.auteur }}</p>
+			</a></div>
+		{% endfor %}
+</div>
+
+		{%endblock%}
+<footer>
+	<p>© 2022 - Mickisz Eloïck</p>
+</footer>
+	</body>
+
+
+
+
+</html>
