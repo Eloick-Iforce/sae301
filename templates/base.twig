@@ -23,6 +23,9 @@
 
 		<h1>Les derniers Articles</h1>
 <div class="wrap">
+ {% for categorie in categorie %}
+			<a href="controleur.php?page=categorie&action=read&id={{categorie.id_categorie}}">{{categorie.nom_categorie}}</a>
+ {% endfor %}
 		{% for article in article %}
 
 			<div class="article">

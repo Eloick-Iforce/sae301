@@ -1,10 +1,12 @@
 <?php
 
-class categorie{
+class categories
+{
     public $id_categorie;
     public $nom_categorie;
 
-    function create (){
+    function create()
+    {
         $sql = 'INSERT INTO categorie (nom_categorie) VALUES (:nom);';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
@@ -13,7 +15,9 @@ class categorie{
         $this->id_categorie = $pdo->lastInsertId();
     }
 
-    function readAll(){
+
+    function readAll()
+    {
         $sql = 'SELECT * FROM `categorie`';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
@@ -22,7 +26,8 @@ class categorie{
         return $tableau;
     }
 
-    function readOne($id){
+    function readOne($id)
+    {
         $sql = 'select * from categorie where id_categorie = :valeur';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
@@ -32,12 +37,14 @@ class categorie{
         return $objet;
     }
 
-    function chargePOST(){
+    function chargePOST()
+    {
         $this->id_categorie = $_POST['id_categorie'];
         $this->nom_categorie = $_POST['nom_categorie'];
     }
 
-    function update(){
+    function update()
+    {
         $sql = 'UPDATE categorie SET nom_categorie = :nom WHERE id_categorie = :id;';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
@@ -46,7 +53,8 @@ class categorie{
         $query->execute();
     }
 
-    function delete(){
+    function delete()
+    {
         $sql = 'DELETE FROM categorie WHERE id_categorie = :id;';
         $pdo = connexion();
         $query = $pdo->prepare($sql);

@@ -12,12 +12,13 @@ class article
 
   function create()
   {
-    $sql = 'INSERT INTO article (titre_article, chapo_article, auteur_article) VALUES (:titre, :chapo, :auteur);';
+    $sql = 'INSERT INTO article (titre_article, chapo_article, auteur_article, id_categorie) VALUES (:titre, :chapo, :auteur, :id_categorie);';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->bindValue(':titre', $this->titre, PDO::PARAM_STR);
     $query->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
     $query->bindValue(':auteur', $this->auteur, PDO::PARAM_STR);
+    $query->bindValue(':id_categorie', $this->id_categorie, PDO::PARAM_INT);
     $query->execute();
     $this->id_article = $pdo->lastInsertId();
     
@@ -50,19 +51,10 @@ class article
     return $objet;
   }
 
-  static function readByCatergorie($id)
-  {
-    $sql = 'select * from article where id_categorie = :valeur';
-    $pdo = connexion();
-    $query = $pdo->prepare($sql);
-    $query->bindValue(':valeur', $id, PDO::PARAM_INT);
-    $query->execute();
-    $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'article');
-    return $tableau;
-  }
   function chargePOST()
   {
     $this->id_article = $_POST['id_article'];
+    $this->id_categorie = $_POST['id_categorie'];
     $this->titre = $_POST['titre'];
     $this->chapo = $_POST['chapo'];
     $this->auteur = $_POST['auteur'];

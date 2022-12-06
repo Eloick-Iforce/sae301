@@ -53,7 +53,7 @@ class elements
   {
     $this->balise = $_POST['balise'];
     $this->contenu = $_POST['contenu'];
-    $this->id_article = $_POST['id_article'];
+    $this->id_article = $_POST['id_elements'];
   }
   function update()
   {

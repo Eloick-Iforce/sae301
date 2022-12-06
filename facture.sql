@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 06 déc. 2022 à 09:28
+-- Généré le : mar. 06 déc. 2022 à 14:23
 -- Version du serveur : 10.4.22-MariaDB
 -- Version de PHP : 8.1.1
 
@@ -31,6 +31,7 @@ CREATE TABLE `article` (
   `id_article` bigint(20) UNSIGNED NOT NULL,
   `titre_article` varchar(255) NOT NULL,
   `chapo_article` text NOT NULL,
+  `auteur_article` varchar(255) NOT NULL,
   `id_categorie` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -53,6 +54,7 @@ CREATE TABLE `categorie` (
 
 CREATE TABLE `elements` (
   `id_elements` bigint(20) UNSIGNED NOT NULL,
+  `id_article` bigint(20) UNSIGNED NOT NULL,
   `balise_elements` varchar(255) NOT NULL,
   `src` text NOT NULL,
   `alt` varchar(255) NOT NULL,
@@ -85,13 +87,13 @@ ALTER TABLE `elements`
 -- AUTO_INCREMENT pour la table `article`
 --
 ALTER TABLE `article`
-  MODIFY `id_article` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_article` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `elements`
 --
 ALTER TABLE `elements`
-  MODIFY `id_elements` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id_elements` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

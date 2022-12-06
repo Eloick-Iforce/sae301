@@ -25,25 +25,23 @@ switch ($page) {
         $data = elements::readAll();
         break;
       case 'create':
-        $auteur = new elements();
-        $auteur->chargePOST();
-        $auteur->create();
+        $article = new elements();
+        $article->chargePOST();
+        $article->create();
         $id = intval($_POST['id_article']);
         header('Location: controleur.php?page=elements&action=edit&id=' . $id);
-
-
         break;
       case 'delete':
         $id = intval($_POST['element_id']);
-        var_dump($id);
         elements::delete($id);
-        goto edit;
+        $id = intval($_POST['id_article']);
+        header('Location: controleur.php?page=elements&action=edit&id=' . $id);
         break;
       case 'update':
         $elements = new elements();
         $elements->chargePOST();
         $elements->update();
-        $id = intval($_POST['id_article']);
+        $id = intval($_POST['id_elements']);
         break;
       case 'upload':
         if (isset($_POST['submit']) && isset($_FILES['my_image'])) {
@@ -134,10 +132,8 @@ switch ($page) {
         $article = new article();
         $article->chargePOST();
         $article->create();
-        header('Location: controleur.php?page=article');
         $view = 'base.twig';
         $contenu = article::readAll();
-
         $data = [
           'article' => $contenu,
         ];
@@ -157,11 +153,26 @@ switch ($page) {
         $data = [];
         break;
     }
+    break;
   default:
     $view = 'base.twig';
+    $categorie = categories::readAll();
     $contenu = article::readAll();
     $data = [
-      'article' => $contenu
+      'article' => $contenu,
+      'categorie' => $categorie
     ];
+    break;
+  case 'categorie':
+    switch ($action) {
+      case 'read':
+        $view = 'base.twig';
+        $categorie = categorie::readAll();
+        $data = [
+          'categorie' => $categorie
+        ];
+        break;
+    }
+    break;
 }
 echo $twig->render($view, $data);

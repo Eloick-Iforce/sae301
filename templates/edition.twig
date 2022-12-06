@@ -6,11 +6,12 @@
 
 	<h2>Modification d\'un contenu</h2>
 
+	<a href="controleur.php?page=article&action=read&id={{ id }}">Retour a la page</a>
 	<div class="redaction">
 		{% for element in elements %}
 
 			<form method="post" action="controleur.php?page=elements&action=update">
-				<input type="hidden" name="id_article" value="{{element.element_id}}">
+				<input type="hidden" name="id_elements" value="{{element.element_id}}">
 				<input type="text" name="style" value="{{element.style}}" placeholder="style">
 				<select name="balise" id="balise">
 					<option value="p">paragraphe</option>
@@ -22,7 +23,7 @@
 				<input type="submit" value="Modifier">
 			</form>
 			<form method="post" action="controleur.php?page=elements&action=delete">
-				<input type="hidden" name="id_article" value="{{ id }}">
+				<input type="hidden" name="id_article" value="{{id}}">
 				<input type="hidden" name="element_id" value="{{element.id_elements}}">
 				<input type="submit" value="Supprimer">
 			</form>
