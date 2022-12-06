@@ -1,5 +1,5 @@
 <?php
-class element
+class elements
 {
   public $element_id;
   public $id_article;
@@ -13,7 +13,7 @@ class element
 
   function create()
   {
-    $sql = 'INSERT INTO elements (balise, contenu, id_article) VALUES (:balise, :contenu, :id_article);';
+    $sql = 'INSERT INTO elements (balise_elements, contenu, id_article) VALUES (:balise, :contenu, :id_article);';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->bindValue(':id_article', $this->id_article, PDO::PARAM_STR);
@@ -35,7 +35,7 @@ class element
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->execute();
-    $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'element');
+    $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'elements');
     return $tableau;
   }
 
@@ -46,7 +46,7 @@ class element
     $query = $pdo->prepare($sql);
     $query->bindValue(':valeur', $id, PDO::PARAM_INT);
     $query->execute();
-    $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'element');
+    $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'elements');
     return $tableau;
   }
   function chargePOST()
@@ -57,7 +57,7 @@ class element
   }
   function update()
   {
-    $sql = 'UPDATE elements SET balise = :balise, contenu = :contenu WHERE element_id = :id;';
+    $sql = 'UPDATE elements SET balise_elements = :balise, contenu = :contenu WHERE id_elements = :id;';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->bindValue(':id', $this->id, PDO::PARAM_INT);
@@ -68,7 +68,7 @@ class element
 
   static function delete($id)
   {
-    $sql = 'DELETE FROM elements WHERE element_id = :id;';
+    $sql = 'DELETE FROM elements WHERE id_elements = :id;';
 
     $pdo = connexion();
 
@@ -78,23 +78,4 @@ class element
 
     $query->execute();
   }
-
-  function afficheForm()
-  {
-    echo '<h2>Modification d\'un contenu</h2>';
-    echo 'Modification d\'un contenu';
-    echo '<form method=post action="controleur.php?page=elements&action=update">';
-    echo '<input type="hidden" name="id" value="' . $this->id . '">';
-    echo '<input type="text" name="style" value="' . $this->style . '">';
-    echo '<select name="balise" id="balise">
-    <option value="p">paragraphe</option>
-    <option value="h1">h1</option>
-    <option value="h2">h2</option>
-    <option value="h3">h3</option>
-    </select>';
-    echo '<input type="text" name="contenu" value="' . $this->contenu . '">';
-    echo '<input type="submit" value="Modifier">';
-    echo '</form>';
-  }
-
 }

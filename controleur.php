@@ -7,6 +7,7 @@ $twig = init_twig();
 include('include/connexion.php');
 include('include/class_element.php');
 include('include/class_article.php');
+include('include/class_categorie.php');
 
 if (isset($_GET['page'])) $page = $_GET['page'];
 else $page = '';
@@ -16,17 +17,15 @@ if (isset($_GET['id'])) $id = intval($_GET['id']);
 else $id = 0;
 
 switch ($page) {
-  default:
-    $view = 'base.twig';
-    $data = [];
+
   case 'elements':
     switch ($action) {
       case 'read':
         $view = 'article.twig';
-        $data = element::readAll();
+        $data = elements::readAll();
         break;
       case 'create':
-        $auteur = new element();
+        $auteur = new elements();
         $auteur->chargePOST();
         $auteur->create();
         $id = intval($_POST['id_article']);
@@ -36,13 +35,14 @@ switch ($page) {
         break;
       case 'delete':
         $id = intval($_POST['element_id']);
-        element::delete($id);
-        header('Location: controleur.php?page=elements');
+        var_dump($id);
+        elements::delete($id);
+        goto edit;
         break;
       case 'update':
-        $element = new element();
-        $element->chargePOST();
-        $element->update();
+        $elements = new elements();
+        $elements->chargePOST();
+        $elements->update();
         $id = intval($_POST['id_article']);
         break;
       case 'upload':
@@ -66,22 +66,22 @@ switch ($page) {
               $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
               $img_ex_lc = strtolower($img_ex);
 
-              $allowed_exs = array("jpg", "jpeg", "png");
+              $allowed_exs = array("jpg", "jpeg", "png", "gif", "svg", "webp", "mp4", "mp3");
 
               if (in_array($img_ex_lc, $allowed_exs)) {
-                $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+                $new_img_name = uniqid("File-", true) . '.' . $img_ex_lc;
                 $img_upload_path = 'uploads/' . $new_img_name;
                 move_uploaded_file($tmp_name, $img_upload_path);
 
                 // Insert into Database
                 $id_article = intval($_POST['id_article']);
-                var_dump($id_article);
+                $balise_article = $_POST['balise'];
 
-                $sql = 'INSERT INTO elements(balise, src, id_article) VALUES (:balise, :src, :valeur);';
+                $sql = 'INSERT INTO elements(balise_elements, src, id_article) VALUES (:balise, :src, :valeur);';
                 $pdo = connexion();
                 $query = $pdo->prepare($sql);
                 $query->bindValue(':valeur', $id_article, PDO::PARAM_STR);
-                $query->bindValue(':balise', 'img', PDO::PARAM_STR);
+                $query->bindValue(':balise', $balise_article, PDO::PARAM_STR);
                 $query->bindValue(':src', $img_upload_path, PDO::PARAM_STR);
                 $query->execute();
                 header("Location: index.php");
@@ -99,25 +99,27 @@ switch ($page) {
         }
         break;
       case 'edit':
+        edit:
         $id = intval($id);
         $view = 'edition.twig';
-        $elements = element::readOne($id);
-
+        $elements = elements::readOne($id);
         $data = [
           'id' => $id,
           'elements' => $elements,
         ];
         break;
     }
+    break;
+
   case 'article':
     switch ($action) {
       case 'read':
         if ($id > 0) {
           $article = article::readOne($id);
-          $contenu = element::readOne($id);
+          $contenu = elements::readOne($id);
           $view = 'article.twig';
           $data = [
-            'element' => $contenu,
+            'elements' => $contenu,
             'article' => $article
           ];
         } else {
@@ -155,5 +157,11 @@ switch ($page) {
         $data = [];
         break;
     }
+  default:
+    $view = 'base.twig';
+    $contenu = article::readAll();
+    $data = [
+      'article' => $contenu
+    ];
 }
 echo $twig->render($view, $data);

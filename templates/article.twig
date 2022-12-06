@@ -6,18 +6,18 @@
 <div class="supp"><a href="controleur.php?page=article&action=delete&id={{article.id_article}}"><i class="bi bi-trash3-fill"></i></i></a></div>
 
 
-<h1>{{article.titre}}</h1>
+<h1>{{article.titre_article}}</h1>
 
-<p class='chapo'>{{article.chapo}}</p>
+<p class='chapo'>{{article.chapo_article}}</p>
 
 <div class="texte">
 
-{% for  element in element %}
+{% for element in elements %}
 
-	<{{element.balise}} src="{{ element.src }}" class="{{ element.style }}">{{ element.contenu }}</{{element.balise}}>
+	<{{element.balise_elements}} src="{{ element.src }}" class="{{ element.style }}">{{ element.contenu }}</{{element.balise_elements}}>
 
 {% endfor %}
 </div>
-<p class='auteur'>{{article.auteur}}</p>
+<p class='auteur'>{{article.auteur_article}}</p>
 
 {% endblock %}
