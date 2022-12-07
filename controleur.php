@@ -27,8 +27,8 @@ switch ($page) {
       case 'create':
         $article = new elements();
         $article->chargePOST();
-        $article->create();
         $id = intval($_POST['id_article']);
+        $article->create($id);
         header('Location: controleur.php?page=elements&action=edit&id=' . $id);
         break;
       case 'delete':
@@ -39,9 +39,16 @@ switch ($page) {
         break;
       case 'update':
         $elements = new elements();
+        $idelementdemerde = intval($_POST['id_elements']);
         $elements->chargePOST();
-        $elements->update();
-        $id = intval($_POST['id_elements']);
+        $elements->update($idelementdemerde);
+        $id = intval($_POST['id_article']);
+        $view = 'edition.twig';
+        $elements = elements::readOne($id);
+        $data = [
+          'id' => $id,
+          'elements' => $elements,
+        ];
         break;
       case 'upload':
         if (isset($_POST['submit']) && isset($_FILES['my_image'])) {
@@ -97,7 +104,6 @@ switch ($page) {
         }
         break;
       case 'edit':
-        edit:
         $id = intval($id);
         $view = 'edition.twig';
         $elements = elements::readOne($id);
@@ -157,7 +163,7 @@ switch ($page) {
   default:
     $view = 'base.twig';
     $categorie = categories::readAll();
-    $contenu = article::readAll();
+    $contenu = NULL;
     $data = [
       'article' => $contenu,
       'categorie' => $categorie
@@ -166,12 +172,23 @@ switch ($page) {
   case 'categorie':
     switch ($action) {
       case 'read':
-        $view = 'base.twig';
-        $categorie = categorie::readAll();
-        $data = [
-          'categorie' => $categorie
-        ];
-        break;
+        if ($id > 0) {
+          $view = 'base.twig';
+          $categorie = categories::readAll();
+          $contenu = categories::readOne($id);
+          $data = [
+            'categorie' => $categorie,
+            'article' => $contenu
+          ];
+        } else {
+          $view = 'base.twig';
+          $categorie = categories::readAll();
+          $data = [
+            'categorie' => $categorie
+          ];
+
+          break;
+        }
     }
     break;
 }

@@ -4,14 +4,18 @@
 {% block main %}
 
 	<h1>Création d'une nouvelle page</h1>
-<div class="redaction">
-	<form method="post" action="controleur.php?page=article&action=create">
-		<input type="hidden" name="id_categorie" value="{{ id_categorie }}">
-		<input type="text" name="titre" placeholder="Titre de la page">
-		<input type="text" name="chapo" placeholder="Chapo">
-		<input type="text" name="auteur" placeholder="Auteur">
-		<input type="submit" value="Créer">
-    </form>
-</div>
+	<div class="redaction">
+		<form method="post" action="controleur.php?page=article&action=create">
+			<select name="id_categorie" id="id_categorie">
+				<option value="1">Categorie 1</option>
+				<option value="2">Categorie 2</option>
+				<option value="2">Categorie 3</option>
+			</select>
+			<input type="text" name="titre" placeholder="Titre de la page">
+			<input type="text" name="chapo" placeholder="Chapo">
+			<input type="text" name="auteur" placeholder="Auteur">
+			<input type="submit" value="Créer">
+		</form>
+	</div>
 
-	{% endblock %}
+{% endblock %}

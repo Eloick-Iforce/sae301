@@ -11,12 +11,12 @@ class elements
 
 
 
-  function create()
+  function create($id)
   {
     $sql = 'INSERT INTO elements (balise_elements, contenu, id_article) VALUES (:balise, :contenu, :id_article);';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
-    $query->bindValue(':id_article', $this->id_article, PDO::PARAM_STR);
+    $query->bindValue(':id_article', $id, PDO::PARAM_STR);
     $query->bindValue(':balise', $this->balise, PDO::PARAM_STR);
     $query->bindValue(':contenu', $this->contenu, PDO::PARAM_STR);
     $query->execute();
@@ -53,14 +53,17 @@ class elements
   {
     $this->balise = $_POST['balise'];
     $this->contenu = $_POST['contenu'];
-    $this->id_article = $_POST['id_elements'];
+    if (isset($_GET['id_articles'])) $this->id_article = intval($_GET['id_articles']);
+    else $this->id_article = 0;
+    if (isset($_GET['id_elements'])) $this->id_elements = intval($_GET['id_elements']);
+else $this->id_elements = 0;
   }
-  function update()
+  function update($id)
   {
-    $sql = 'UPDATE elements SET balise_elements = :balise, contenu = :contenu WHERE id_elements = :id;';
+    $sql = 'UPDATE `elements` SET balise_elements = :balise, contenu = :contenu WHERE `elements`.`id_elements` = :id;';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
-    $query->bindValue(':id', $this->id, PDO::PARAM_INT);
+    $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->bindValue(':balise', $this->balise, PDO::PARAM_STR);
     $query->bindValue(':contenu', $this->contenu, PDO::PARAM_STR);
     $query->execute();

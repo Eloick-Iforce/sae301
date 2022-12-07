@@ -16,25 +16,25 @@ class categories
     }
 
 
-    function readAll()
+    static function readAll()
     {
         $sql = 'SELECT * FROM `categorie`';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->execute();
-        $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'categorie');
+        $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'categories');
         return $tableau;
     }
 
-    function readOne($id)
+    static function readOne($id)
     {
-        $sql = 'select * from categorie where id_categorie = :valeur';
+        $sql = 'SELECT * from article where id_categorie = :valeur';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->bindValue(':valeur', $id, PDO::PARAM_INT);
         $query->execute();
-        $objet = $query->fetchObject('categorie');
-        return $objet;
+        $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'article');
+        return $tableau;
     }
 
     function chargePOST()

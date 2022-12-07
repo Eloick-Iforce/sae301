@@ -23,21 +23,18 @@
 
 	{% for element in elements %}
 
-		{% if element.balise_elements == video %}
+		{% if element.balise_elements == "video" %}
 
 			<video controls>
 				<source src="{{ element.src }}">
 			</video>
-		{% else %}
-
-			{%if element.balise_elements == audio %}
-				<figure>
-					<figcaption>Listen to the T-Rex:</figcaption>
-					<audio controls src="{{ element.src }}"></audio>
-				</figure>
-			{% else %}
-				<{{element.balise_elements}} src="{{ element.src }}" class="{{ element.style }}">{{ element.contenu }}</{{element.balise_elements}}>
-			{% endif %}
+		{% elseif element.balise_elements == "audio" %}
+					<audio controls> <source src="{{ element.src }}"></audio>
+			{% elseif element.balise_elements == "img" %}
+				<{{element.balise_elements}} src="{{ element.src }}" alt="{{ element.alt }}" class="{{ element.style }}">
+				{% else %}
+					
+				<{{element.balise_elements}} class="{{ element.style }}">{{ element.contenu }}</{{element.balise_elements}}>
 		{% endif %}
 
 
