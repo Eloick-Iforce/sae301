@@ -161,7 +161,7 @@ switch ($page) {
     }
     break;
   default:
-    $view = 'base.twig';
+    $view = 'accueil.twig';
     $categorie = categories::readAll();
     $contenu = NULL;
     $data = [

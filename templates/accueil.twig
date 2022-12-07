@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>CMS</title>
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<nav>
+		<ul>
+			<li>
+				<p>
+					<a href="controleur.php">Crimson Management System</a>
+				</p>
+			</li>
+			<li>
+				<p>
+					<a href="controleur.php">Accueil</a>
+				</p>
+			</li>
+			<li>
+				<p>
+					<a href="controleur.php?page=article&action=new">Nouvelle page</a>
+				</p>
+			</li>
+		</ul>
+	</nav>
+
+
+	<body>
+		{% block main %}
+        <h1>Accueil</h1>
+		<div class="wrap">
+			{% for categorie in categorie %}
+            <div class="categorie{{categorie.id_categorie}}">
+				<a href="controleur.php?page=categorie&action=read&id={{categorie.id_categorie}}">{{categorie.nom_categorie}}</a>
+			</div>
+            {% endfor %}
+			{% for article in article %}
+				<a href="controleur.php?page=article&action=read&id={{article.id_article}}">
+					<div class="article">
+						<h2>{{ article.titre_article }}</h2>
+						<p class="chapo">{{ article.chapo_article }}</p>
+						<p class="auteur">{{ article.auteur_article }}</p>
+					</div>
+				</a>
+
+			{% endfor %}
+		</div>
+
+		{%endblock%}
+		<footer>
+		</footer>
+	</body>
+
+
+</html>
