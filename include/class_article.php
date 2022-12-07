@@ -12,12 +12,13 @@ class article
 
   function create()
   {
-    $sql = 'INSERT INTO article (titre, chapo, auteur) VALUES (:titre, :chapo, :auteur);';
+    $sql = 'INSERT INTO article (titre_article, chapo_article, auteur_article, id_categorie) VALUES (:titre, :chapo, :auteur, :id_categorie);';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->bindValue(':titre', $this->titre, PDO::PARAM_STR);
     $query->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
     $query->bindValue(':auteur', $this->auteur, PDO::PARAM_STR);
+    $query->bindValue(':id_categorie', $this->id_categorie, PDO::PARAM_INT);
     $query->execute();
     $this->id_article = $pdo->lastInsertId();
     
@@ -31,20 +32,12 @@ class article
 
   static function readAll()
   {
-    $sql = 'select * from article';
+    $sql = 'SELECT * FROM `article`';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->execute();
     $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'article');
     return $tableau;
-  }
-  function affiche()
-  {
-    echo '<h2>' . $this->titre . '</h2>';
-    echo '<p>' . $this->chapo . '</p>';
-    echo '<p>' . $this->auteur . '</p>';
-    echo '<a href="controleur.php?page=articles&action=edit&id=' . $this->id_article . '"><i class="bi bi-pen"></i></a>
-    <a href="controleur.php?page=articles&action=delete&id=' . $this->id_article . '"><i class="bi bi-trash"></i></a>';
   }
 
   static function readOne($id)
@@ -57,16 +50,18 @@ class article
     $objet = $query->fetchObject('article');
     return $objet;
   }
+
   function chargePOST()
   {
     $this->id_article = $_POST['id_article'];
+    $this->id_categorie = $_POST['id_categorie'];
     $this->titre = $_POST['titre'];
     $this->chapo = $_POST['chapo'];
     $this->auteur = $_POST['auteur'];
   }
   function update()
   {
-    $sql = 'UPDATE article SET titre = :titre, chapo = :chapo, auteur = :auteur WHERE id_article = :id_article;';
+    $sql = 'UPDATE article SET titre_article = :titre, chapo_article = :chapo, auteur_article = :auteur WHERE id_article = :id_article;';
     $pdo = connexion();
     $query = $pdo->prepare($sql);
     $query->bindValue(':id_article', $this->id_article, PDO::PARAM_INT);

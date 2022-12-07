@@ -11,9 +11,21 @@
 
 	<nav>
 		<ul>
-			<li><p><a href="controleur.php">Crimson Management System</a></p></li>
-			<li><p><a href="controleur.php">Accueil</a></p></li>
-			<li><p><a href="controleur.php?page=article&action=new">Nouvelle page</a></p></li>
+			<li>
+				<p>
+					<a href="controleur.php">Crimson Management System</a>
+				</p>
+			</li>
+			<li>
+				<p>
+					<a href="controleur.php">Accueil</a>
+				</p>
+			</li>
+			<li>
+				<p>
+					<a href="controleur.php?page=article&action=new">Nouvelle page</a>
+				</p>
+			</li>
 		</ul>
 	</nav>
 
@@ -22,25 +34,27 @@
 		{% block main %}
 
 		<h1>Les derniers Articles</h1>
-<div class="wrap">
-		{% for article in article %}
+		<div class="wrap">
+			{% for categorie in categorie %}
+				<a href="controleur.php?page=categorie&action=read&id={{categorie.id_categorie}}">{{categorie.nom_categorie}}</a>
+			{% endfor %}
+			{% for article in article %}
+				<a href="controleur.php?page=article&action=read&id={{article.id_article}}">
+					<div class="article">
+						<h2>{{ article.titre_article }}</h2>
+						<p class="chapo">{{ article.chapo_article }}</p>
+						<p class="auteur">{{ article.auteur_article }}</p>
+					</div>
+				</a>
 
-			<div class="article">
-			<a href="controleur.php?page=article&action=read&id={{article.id_article}}">
-				<h2>{{ article.titre }}</h2>
-				<p class="chapo">{{ article.chapo }}</p>
-				<p class="auteur">{{ article.auteur }}</p>
-			</a></div>
-		{% endfor %}
-</div>
+			{% endfor %}
+		</div>
 
 		{%endblock%}
-<footer>
-	<p>© 2022 - Mickisz Eloïck</p>
-</footer>
+		<footer>
+			<p>© 2022 - Mickisz Eloïck</p>
+		</footer>
 	</body>
-
-
 
 
 </html>

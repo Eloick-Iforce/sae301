@@ -3,7 +3,7 @@
 $config = array(
   'driver' => 'mysql',
   'serveur' => 'localhost',
-  'base' => 'blog2',
+  'base' => 'facture',
   'utilisateur' => 'root',
   'mdp' => ''
 );
