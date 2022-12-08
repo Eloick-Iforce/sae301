@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>CMS</title>
 		<link rel="stylesheet" href="css/css.css">
+		<link rel="stylesheet" href="css/reset.css">
 
 	</head>
 
@@ -13,17 +14,20 @@
 	<body>
 		<main>
 			{% for categorie in categorie %}
+				{% if categorie.id_categorie == 1 %}
 
-				<header>
-					<p class="entete--1">20221221_234137_00002_HP0_PAR911_231</p>
-					{% if categorie.id_categorie == 1 %}
+					<header>
+						<p class="entete--1">20221221_234137_00002_HP0_PAR911_231</p>
 						<a href="controleur.php?page=categorie&action=read&id={{categorie.id_categorie}}">
-								<img src="uploads\File-639072eaa3ad28.82395826.jpg" alt="logo">
+							<div>
+								<img src="images\edf.png" alt="logo">
+							</div>
 						</a>
-					{% endif %}
-					<p class="entete--4">Document à conserver 5 ans</p>
-					<p class="entete--5">Page 1/4</p>
-				</header>
+						<p class="entete--4">Document à conserver 5 ans</p>
+						<p class="entete--5">Page 1/4</p>
+					</header>
+				{% endif %}
+
 				{% if categorie.id_categorie == 2 %}
 
 					<div class="div_nom">
@@ -65,10 +69,11 @@
 					</div>
 				</a>
 			{% endif %}
+		{% endfor %}
+
 			<aside>
 				<footer>
 					Crée par les étudiants MMI de l'IUT de Haguenau</footer>
 			</aside>
-		{% endfor %}
 	</body>
 </html></main></body></html>
