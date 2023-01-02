@@ -3,19 +3,58 @@
 
 {% block main %}
 
-	<h1>Création d'une nouvelle page</h1>
-	<div class="redaction">
+	<div class="xd">
+		<h1>Création d'une nouvelle page</h1>
+
 		<form method="post" action="controleur.php?page=article&action=create">
 			<select name="id_categorie" id="id_categorie">
-				<option value="1">Categorie 1</option>
-				<option value="2">Categorie 2</option>
-				<option value="2">Categorie 3</option>
-			</select>
-			<input type="text" name="titre" placeholder="Titre de la page">
-			<input type="text" name="chapo" placeholder="Chapo">
-			<input type="text" name="auteur" placeholder="Auteur">
-			<input type="submit" value="Créer">
-		</form>
-	</div>
+				{% for categorie in categories %}
+					<option value="{{categorie.id_categorie}}">{{categorie.nom_categorie}}</option>
+					{%endfor%}
+				</select>
+				<select name="id_sous_categorie" id="id__sous_categorie">
+					<option value="0">Pas ici</option>
+					<option value="1">Investissements</option>
+					<option value="1">Entreprises</option>
+					<option value="1">Long terme</option>
+				</select>
+				<select name="id_sous_categorie2" id="id__sous_categorie2">
+					<option value="0">Pas ici</option>
+					<option value="2">Derives</option>
+					<option value="2">Particuliers</option>
+					<option value="2">Court terme</option>
+				</select>
+				<input type="text" name="titre" placeholder="Titre de la page">
+				<textarea name="phrase" placeholder="Phrase"></textarea>
+				<textarea name="chapo" placeholder="Chapo"></textarea>
+				<input type="text" name="auteur" placeholder="Auteur">
+				<input type="submit" value="Créer">
+			</form>
+			<h1>Modifier les catégories</h1>
+			{% for categorie in categories %}
+				<form method="post" action="controleur.php?page=categorie&action=update">
+					<textarea name="nom_categorie">{{categorie.nom_categorie}}</textarea>
+					<textarea name="chapo">{{categorie.chapo}}</textarea>
+					<input type="hidden" name='id_categorie' value='{{categorie.id_categorie}}'>
+					<input type="submit" value="Modifier">
+				</form>
 
-{% endblock %}
+				{%endfor%}
+
+				<h1>Modifier les articles</h1>
+
+				{% for article in articles %}
+					<form method="post" action="controleur.php?page=article&action=update">
+						<textarea name="titre">{{article.titre}}</textarea>
+						<textarea name="phrase">{{article.phrase}}</textarea>
+						<textarea name="chapo">{{article.chapo}}</textarea>
+						<input type="hidden" name='id_article' value='{{article.id_article}}'>
+						<input type="submit" value="Modifier">
+					</form>
+
+					{%endfor%}
+
+
+				</div>
+
+			{% endblock %}

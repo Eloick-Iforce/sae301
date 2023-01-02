@@ -3,8 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
-
--- Généré le : mar. 06 déc. 2022 à 14:23
+-- Généré le : lun. 12 déc. 2022 à 14:28
 -- Version du serveur : 10.4.22-MariaDB
 -- Version de PHP : 8.1.1
 
@@ -16,7 +15,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Base de données : `facture`
@@ -30,17 +29,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `article` (
   `id_article` bigint(20) UNSIGNED NOT NULL,
-  `titre_article` varchar(255) NOT NULL,
-  `chapo_article` text NOT NULL,
-  `auteur_article` varchar(255) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `chapo` text NOT NULL,
+  `auteur` varchar(255) NOT NULL,
   `id_categorie` bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `article`
 --
 
-INSERT INTO `article` (`id_article`, `titre_article`, `chapo_article`, `auteur_article`, `id_categorie`) VALUES
+INSERT INTO `article` (`id_article`, `titre`, `chapo`, `auteur`, `id_categorie`) VALUES
 (15, 'L\'écologie', 'L\'écologie est la science qui étudie les relations des organismes vivants avec leur environnement. Elle vise à comprendre comment les différents éléments de l\'environnement interagissent entre eux et comment ils influencent la vie des organismes qui y vivent.', 'Eloick', 2);
 
 -- --------------------------------------------------------
@@ -52,16 +51,16 @@ INSERT INTO `article` (`id_article`, `titre_article`, `chapo_article`, `auteur_a
 CREATE TABLE `categorie` (
   `id_categorie` bigint(20) UNSIGNED NOT NULL,
   `nom_categorie` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `categorie`
 --
 
 INSERT INTO `categorie` (`id_categorie`, `nom_categorie`) VALUES
-(1, 'Categorie 1'),
-(2, 'Categorie 2'),
-(3, 'Categorie 3');
+(1, 'Consommateurs'),
+(2, 'Les états et l\'union Européene'),
+(3, 'Acteurs de l\'énergie');
 
 -- --------------------------------------------------------
 
@@ -72,18 +71,18 @@ INSERT INTO `categorie` (`id_categorie`, `nom_categorie`) VALUES
 CREATE TABLE `elements` (
   `id_elements` bigint(20) UNSIGNED NOT NULL,
   `id_article` bigint(20) UNSIGNED NOT NULL,
-  `balise_elements` varchar(255) NOT NULL,
+  `balise` varchar(255) NOT NULL,
   `src` text NOT NULL,
   `alt` varchar(255) NOT NULL,
   `contenu` text NOT NULL,
   `type` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `elements`
 --
 
-INSERT INTO `elements` (`id_elements`, `id_article`, `balise_elements`, `src`, `alt`, `contenu`, `type`) VALUES
+INSERT INTO `elements` (`id_elements`, `id_article`, `balise`, `src`, `alt`, `contenu`, `type`) VALUES
 (31, 15, 'h2', '', '', 'De nos jours', ''),
 (32, 15, 'p', '', '', 'De nos jours, l\'écologie est un sujet d\'actualité en raison des défis environnementaux auxquels nous faisons face, tels que le changement climatique, la pollution de l\'air et de l\'eau, la perte de biodiversité et la dégradation des écosystèmes.', ''),
 (34, 15, 'img', 'uploads/File-639072eaa3ad28.82395826.jpg', '', '', ''),
@@ -128,16 +127,19 @@ ALTER TABLE `elements`
 -- AUTO_INCREMENT pour la table `article`
 --
 ALTER TABLE `article`
+  MODIFY `id_article` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
-  MODIFY `id_article` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+--
+-- AUTO_INCREMENT pour la table `categorie`
+--
+ALTER TABLE `categorie`
+  MODIFY `id_categorie` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `elements`
 --
 ALTER TABLE `elements`
-
-  MODIFY `id_elements` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_elements` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

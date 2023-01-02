@@ -1,0 +1,27 @@
+{
+  "name": "sae_301",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "node-sass": "sass -w scss/:dist/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fratge/SAE_301.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fratge/SAE_301/issues"
+  },
+  "homepage": "https://github.com/Fratge/SAE_301#readme",
+  "dependencies": {
+    "@barba/core": "^2.9.7",
+    "node-sass": "^8.0.0"
+  },
+  "devDependencies": {
+    "video.js": "^7.20.3"
+  }
+}

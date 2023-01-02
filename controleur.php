@@ -1,5 +1,6 @@
 <?php
 
+
 include('include/twig.php');
 $twig = init_twig();
 
@@ -44,7 +45,7 @@ switch ($page) {
         $elements->update($idelementdemerde);
         $id = intval($_POST['id_article']);
         $view = 'edition.twig';
-        $elements = elements::readOne($id);
+        $elements = elements::readByArticle($id);
         $data = [
           'id' => $id,
           'elements' => $elements,
@@ -71,7 +72,7 @@ switch ($page) {
               $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
               $img_ex_lc = strtolower($img_ex);
 
-              $allowed_exs = array("jpg", "jpeg", "png", "gif", "svg", "webp", "mp4", "mp3");
+              $allowed_exs = array("jpg", "jpeg", "png", "gif", "svg", "webp", "mp4", "mp3",'wav');
 
               if (in_array($img_ex_lc, $allowed_exs)) {
                 $new_img_name = uniqid("File-", true) . '.' . $img_ex_lc;
@@ -81,13 +82,19 @@ switch ($page) {
                 // Insert into Database
                 $id_article = intval($_POST['id_article']);
                 $balise_article = $_POST['balise'];
+                $contenu = $_POST['contenu'];
+                $contenu2 = $_POST['contenu2'];
+                $style = $_POST['style'];
 
-                $sql = 'INSERT INTO elements(balise_elements, src, id_article) VALUES (:balise, :src, :valeur);';
+                $sql = 'INSERT INTO elements(balise, src, id_article, contenu, contenu2, style) VALUES (:balise, :src, :valeur,:contenu,:contenu2, :style);';
                 $pdo = connexion();
                 $query = $pdo->prepare($sql);
                 $query->bindValue(':valeur', $id_article, PDO::PARAM_STR);
                 $query->bindValue(':balise', $balise_article, PDO::PARAM_STR);
-                $query->bindValue(':src', $img_upload_path, PDO::PARAM_STR);
+                $query->bindValue(':src', $new_img_name, PDO::PARAM_STR);
+                $query->bindValue(':contenu', $contenu, PDO::PARAM_STR);
+                $query->bindValue(':contenu2', $contenu2, PDO::PARAM_STR);
+                $query->bindValue(':style', $style, PDO::PARAM_STR);
                 $query->execute();
                 header("Location: index.php");
               } else {
@@ -106,10 +113,12 @@ switch ($page) {
       case 'edit':
         $id = intval($id);
         $view = 'edition.twig';
-        $elements = elements::readOne($id);
+        $elements = elements::readByArticle($id);
+        $categorie = categories::readAll();
         $data = [
           'id' => $id,
           'elements' => $elements,
+          'categorie' => $categorie
         ];
         break;
     }
@@ -120,11 +129,13 @@ switch ($page) {
       case 'read':
         if ($id > 0) {
           $article = article::readOne($id);
-          $contenu = elements::readOne($id);
+          $contenu = elements::readByArticle($id);
+          $categories = categories::readAll();
           $view = 'article.twig';
           $data = [
             'elements' => $contenu,
-            'article' => $article
+            'article' => $article,
+            'categories' => $categories
           ];
         } else {
           $view = 'base.twig';
@@ -156,7 +167,12 @@ switch ($page) {
         break;
       case 'new':
         $view = 'new.twig';
-        $data = [];
+        $categories = categories::readAll();
+        $article = article::readAll();
+        $data = [
+          'categories' => $categories,
+          'articles' =>$article
+        ];
         break;
     }
     break;
@@ -174,22 +190,34 @@ switch ($page) {
       case 'read':
         if ($id > 0) {
           $view = 'base.twig';
-          $categorie = categories::readAll();
-          $contenu = categories::readOne($id);
+          $categories = categories::readAll();
+          $contenu = article::readByCategorie($id);
+          $categorie = categories::readOne($id);
+
           $data = [
-            'categorie' => $categorie,
-            'article' => $contenu
+            'categories' => $categories,
+            'articles' => $contenu,
+            'categorie' => $categorie
           ];
+          break;
         } else {
           $view = 'base.twig';
           $categorie = categories::readAll();
           $data = [
             'categorie' => $categorie
           ];
-
           break;
+
         }
+      case 'update':
+        $categorie = new categories();
+        $categorie->chargePOST();
+        $categorie->update();
+        header('Location: controleur.php?page=article');
+        break;
     }
     break;
 }
+
+
 echo $twig->render($view, $data);

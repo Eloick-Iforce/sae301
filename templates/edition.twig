@@ -3,56 +3,131 @@
 
 {% block main %}
 
+	<script>
+		let textarea = '';
+	</script>
+	<main class="xd">
 
-	<h2>Modification d\'un contenu</h2>
 
-	<a href="controleur.php?page=article&action=read&id={{ id }}">Retour a la page</a>
-	<div class="redaction">
-		{% for element in elements %}
+		<div class="redaction">
+			<a href="controleur.php?page=article&action=read&id={{ id }}">Retour a la page</a>
+		</div>
+		<div class="edition">
+			<h2>Modification d'un contenu</h2>
+			{% for element in elements %}
+				<form method="post" action="controleur.php?page=elements&action=update">
+					<input type="hidden" name="id_article" value="{{id}}">
+					<input type="hidden" name="id_elements" value="{{element.id_elements}}">
+					{% if element.balise == 'img' %}
+						<img src="uploads/{{element.src}}" alt="image">
+						<input type="hidden" name="balise" value="{{element.balise}}">
+						<select name="style" id="style">
+							<option value="image_droite" {%if element.style=='image_droite'%} selected {%endif%}>Image à droite</option>
+							<option value="header" {%if element.style=='header'%} selected {%endif%}>Image du Header</option>
+							<option value="image_gauche" {%if element.style=='image_gauche'%} selected {%endif%}>Image à gauche</option>
+							<option value="fullsize" {%if element.style=='fullsize'%} selected {%endif%}>Image Full size</option>
+							<option value="image_audio" {%if element.style=='image_audio'%} selected {%endif%}>Image Fond audio marche que si il s'agit d'une balise grand audio</option>
+						</select>
+					{% elseif element.balise == 'audio' %}
+						<audio src="uploads/{{element.src}}" controls></audio>
+						<input type="hidden" name="balise" value="{{element.balise}}">
+						<select name="style" id="style">
+							<option value="grand_audio" {%if element.style=='grand_audio'%} selected {%endif%}>Audio Full-size</option>
+							<option value="" {%if element.style==''%} selected {%endif%}>Audio petite-size</option>
+						</select>
+					{% elseif element.balise == 'video' %}
+						<video src="uploads/{{element.src}}" controls></video>
+					{% elseif element.style == 'encadrer' %}
+						<textarea name="contenu" id='txt{{element.id_elements}}'>{{element.contenu}}</textarea>
+						<textarea name="contenu2" id='txt{{element.id_elements}}'>{{element.contenu2}}</textarea>
+						<select name="style" id="style">
+							<option value="encadrer" {%if element.style=='encadrer'%} selected {%endif%}>Encadrer</option>
+							<option value="" {%if element.style==''%} selected {%endif%}>Normal</option>
+						</select>
+					{% else %}
+						<textarea name="contenu" id='txt{{element.id_elements}}'>{{element.contenu}}</textarea>
+						<select name="balise" id="balise">
+							<option value="p" {%if element.balise=='p'%} selected {%endif%}>Paragraphe</option>
+							<option value="h2" {%if element.balise=='h2'%} selected {%endif%}>Titre Partie</option>
+							<option value="h3" {%if element.balise=='h3'%} selected {%endif%}>Inter-Titre</option>
+							<option value="h4" {%if element.balise=='h4'%} selected {%endif%}>Sous-titre</option>
+						</select>
+						<select name="style" id="style">
+							<option value="" {%if element.style==''%} selected {%endif%}>Normal</option>
+							<option value="encadrer" {%if element.style=='encadrer'%} selected {%endif%}>Encadrer</option>
+						</select>
 
-			<form method="post" action="controleur.php?page=elements&action=update">
-			<input type="hidden" name="id_article" value="{{id}}">
-				<input type="hidden" name="id_elements" value="{{element.id_elements}}">
-				<input type="text" name="style" value="{{element.style}}" placeholder="style">
-				<select name="balise" id="balise">
-					<option value="p">paragraphe</option>
-					<option value="h1">h1</option>
-					<option value="h2">h2</option>
-					<option value="h3">h3</option>
-				</select>
-				<textarea name="contenu">{{element.contenu}}</textarea>
-				<input type="submit" value="Modifier">
-			</form>
-			<form method="post" action="controleur.php?page=elements&action=delete">
+						<script>
+							textarea = document.getElementById("txt{{ element.id_elements }}");
+textarea.style.height = "auto";
+textarea.style.height = (textarea.scrollHeight + 20) + "px";
+
+console.log(textarea.style.height);
+console.log(textarea.scrollHeight);
+
+textarea.addEventListener("input", function (e) {
+this.style.height = "auto";
+this.style.height = (this.scrollHeight + 20) + 'px';
+});
+						</script>
+					{% endif %}
+					<input type="submit" value="Modifier">
+				</form>
+				<form class="supprimer" method="post" action="controleur.php?page=elements&action=delete">
+					<input type="hidden" name="id_article" value="{{id}}">
+					<input type="hidden" name="element_id" value="{{element.id_elements}}">
+					<input type="submit" value="Supprimer">
+				</form>
+			{% endfor %}
+		</div>
+
+
+		<div class="creation">
+			<h2>Création d'un contenu</h2>
+
+
+			<form method="post" action="controleur.php?page=elements&action=create">
 				<input type="hidden" name="id_article" value="{{id}}">
-				<input type="hidden" name="element_id" value="{{element.id_elements}}">
-				<input type="submit" value="Supprimer">
+				<textarea name="contenu" placeholder="contenu"></textarea>
+				<select name="balise" id="balise">
+					<option value="p">Paragraphe</option>
+					<option value="h2">Titre</option>
+					<option value="h3">Sous-Titre</option>
+					<option value="h3">Sous-sous-titre</option>
+				</select>
+				<select name="style" id="style">
+					<option value="encadrer" {%if element.style=='encadrer'%} selected {%endif%}>Encadrer</option>
+					<option value="" {%if element.style==''%} selected {%endif%}>Normal</option>
+				</select>
+				<textarea name="contenu2" placeholder="A REMPLIR SEULEMENT SI CELA EST POUR UN ENCADRER IL DOIT SACHIR DU PARAGRAPHE"></textarea>
+
+				<input type="submit" value="Créer">
 			</form>
+			<form action="controleur.php?page=elements&action=upload" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="id_article" value="{{id}}">
+				<select name="balise" id="balise">
+					<option value="img">Image</option>
+					<option value="audio">Fichier Audio</option>
+					<option value="video">Vidéo</option>
+				</select>
+				<select name="style" id="style">
+					<option value="" {%if element.style==''%} selected {%endif%}>Basique</option>
+					<option value="image_droite" {%if element.style=='image_droite'%} selected {%endif%}>Image à droite</option>
+					<option value="image_audio" {%if element.style=='image_audio'%} selected {%endif%}>Image Fond audio marche que si il s'agit d'une balise grand audio</option>
+					<option value="header" {%if element.style=='header'%} selected {%endif%}>Image du Header</option>
+					<option value="image_gauche" {%if element.style=='image_gauche'%} selected {%endif%}>Image à gauche</option>
+					<option value="fullsize" {%if element.style=='fullsize'%} selected {%endif%}>Image Full size</option>
+					<option value="grand_audio" {%if element.style=='grand_audio'%} selected {%endif%}>Grand audio</option>
+				</select>
+				<textarea name="contenu" placeholder="Titre"></textarea>
+				<textarea name="contenu2" placeholder="Description / Auteur"></textarea>
 
-		{% endfor %}
+				<input type="file" name="my_image">
+				<input type="submit" name="submit" value="Upload">
 
-		<form method="post" action="controleur.php?page=elements&action=create">
-			<input type="hidden" name="id_article" value="{{id}}">
-			<select name="balise" id="balise">
-				<option value="p">paragraphe</option>
-				<option value="h1">h1</option>
-				<option value="h2">h2</option>
-				<option value="h3">h3</option>
-			</select>
-			<textarea name="contenu" placeholder="contenu"></textarea>
-			<input type="submit" value="Créer">
-		</form>
-		<form action="controleur.php?page=elements&action=upload" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="id_article" value="{{id}}">
-			<select name="balise" id="balise">
-				<option value="img">Image</option>
-				<option value="audio">Fichier Audio</option>
-				<option value="video">Vidéo</option>
-			</select>
-			<input type="file" name="my_image">
-			<input type="submit" name="submit" value="Upload">
+			</form>
+		</div>
+	</main>
 
-		</form>
-	</div>
 
 {% endblock %}

@@ -1,0 +1,18 @@
+.titre-container{
+    background-image: url(../images/image_categorie1.png);
+    height: 350px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 80%;
+    margin-left: 21%;
+}
+
+.titre-container > h2{
+    font-size: 75px;
+    padding: 175px 0px 0px 26px;
+    position: relative;
+    color: white;
+    /* text-decoration: underline #F15920 10px;
+    text-decoration-skip-ink: none;
+    text-underline-offset: -2px; */
+}

@@ -4,6 +4,7 @@ class categories
 {
     public $id_categorie;
     public $nom_categorie;
+    public $chapo;
 
     function create()
     {
@@ -26,29 +27,34 @@ class categories
         return $tableau;
     }
 
+
+
     static function readOne($id)
     {
-        $sql = 'SELECT * from article where id_categorie = :valeur';
-        $pdo = connexion();
-        $query = $pdo->prepare($sql);
-        $query->bindValue(':valeur', $id, PDO::PARAM_INT);
-        $query->execute();
-        $tableau = $query->fetchAll(PDO::FETCH_CLASS, 'article');
-        return $tableau;
+      $sql = 'select * from categorie where id_categorie = :valeur';
+      $pdo = connexion();
+      $query = $pdo->prepare($sql);
+      $query->bindValue(':valeur', $id, PDO::PARAM_INT);
+      $query->execute();
+      $objet = $query->fetchObject('categories');
+      return $objet;
     }
 
     function chargePOST()
     {
         $this->id_categorie = $_POST['id_categorie'];
         $this->nom_categorie = $_POST['nom_categorie'];
+        $this->chapo = $_POST['chapo'];
+
     }
 
     function update()
     {
-        $sql = 'UPDATE categorie SET nom_categorie = :nom WHERE id_categorie = :id;';
+        $sql = 'UPDATE categorie SET nom_categorie = :nom, chapo =:chapo WHERE id_categorie = :id;';
         $pdo = connexion();
         $query = $pdo->prepare($sql);
         $query->bindValue(':nom', $this->nom_categorie, PDO::PARAM_STR);
+        $query->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
         $query->bindValue(':id', $this->id_categorie, PDO::PARAM_INT);
         $query->execute();
     }
